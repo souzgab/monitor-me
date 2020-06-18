@@ -1,10 +1,12 @@
+const dotenv = require('dotenv');
+dotenv.config()
 
 module.exports={
     dialect: 'mssql',
-    host: 'srvabeecultor.database.windows.net',
-    username: 'userabeecultor',
-    password: '#Gfgrupo8b',
-    database: 'monitorMe',
+    host: process.env.HOST,
+    username: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
     define: {
         timestamps: true,
     },
