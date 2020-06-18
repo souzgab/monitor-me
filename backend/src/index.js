@@ -16,5 +16,5 @@ app.use(express.json());
 app.use(routes);
 app.use(systemRoutes);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => {`Listening at Port ${PORT}`});
