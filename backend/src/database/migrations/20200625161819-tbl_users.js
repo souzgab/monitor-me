@@ -1,10 +1,8 @@
 'use strict';
 
-const bcrypt = require('bcrypt');
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('monitor_users', {
+    return queryInterface.createTable('tbl_Users', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -19,13 +17,17 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      whatsapp:{
+      cellphone:{
         type: Sequelize.STRING,
         allowNull: false,
       },
       password:{
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      idTelegram: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE, 
@@ -41,6 +43,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-      return queryInterface.dropTable('monitor_users');
+      return queryInterface.dropTable('tbl_Users');
     }
   };

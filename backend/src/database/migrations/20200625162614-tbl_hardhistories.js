@@ -2,32 +2,28 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('event_hardwares_histories', {
+    return queryInterface.createTable('tbl_HardHistories', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      hardId: {
+      UserId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'event_hardwares',
+          model: 'tbl_Users',
           key: 'id'
         } ,
         onUpdate: 'cascade',
         onDelete: 'cascade',
         allowNull: false,
       },
-      memoryRamReg: {
+      OshiStatus: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      GPUReg: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      hardDiskReg: {
+      GPUStatus: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -39,10 +35,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       }
-    });
+    });    
   },
 
   down: (queryInterface, Sequelize) => {
-      return queryInterface.dropTable('event_hardwares_histories');
+      return queryInterface.dropTable('tbl_Users');
     }
   };

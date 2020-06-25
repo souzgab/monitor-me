@@ -6,7 +6,6 @@ const gnt = require('../validators/generateToken')
 
 module.exports = {
     async createLogin(request, response) {
-
         const {
             email,
             password
@@ -45,12 +44,5 @@ module.exports = {
         }
 
 
-    },
-
-    async authenticate(request, response) {
-
-        const allU = await User.findAll()
-
-        response.json(allU)
     }
 }
