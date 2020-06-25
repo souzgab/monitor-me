@@ -6,6 +6,7 @@ class tbl_HardHistories extends Model{
 			UserId: DataTypes.INTEGER,
 			OshiStatus: DataTypes.STRING,
 			GPUStatus: DataTypes.STRING,
+			CpuStatus: DataTypes.STRING,
 		}, {
 			sequelize
 		})
