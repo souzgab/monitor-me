@@ -7,16 +7,16 @@ module.exports = {
         const {UserId} = req.params;
 
         const user = await User.findByPk(UserId, {
-            include: { association : 'EventHistory'}
+            include: { association : 'histories'}
         })
-        res.json(user)
+        
         const AllEventHistory = await EventHistory.findAll({
             where:{
                 UserId: UserId
             }
         })
-        return res.json(
-            AllEventHistory
+        return res.json({user}
+            
         )
     },
     async cadastrarEvento(req, res){
@@ -36,7 +36,8 @@ module.exports = {
     async getAllUser(req, res){
         
         const x = await User.findAll();
+        const y = await EventHistory.findAll();
 
-        res.status(200).send({message: "Done", body: x});
+        res.status(200).send({message: "Done", pessoas: x, eventos: y});
     }
 }

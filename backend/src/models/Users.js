@@ -23,7 +23,7 @@ class tbl_Users extends Model {
 		})
 	}
 	static associate(models) {
-		this.hasMany(models.tbl_HardHistories, {foreignKey: 'UserId',as: 'histories'})
+		this.hasMany(models.tbl_HardHistories, {foreignKey: 'UserId', as: 'histories'})
 	}
 }
 
