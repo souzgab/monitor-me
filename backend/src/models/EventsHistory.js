@@ -4,9 +4,9 @@ class tbl_HardHistories extends Model{
 	static init(sequelize){
 		super.init({
 			UserId: DataTypes.INTEGER,
-			OshiStatus: DataTypes.STRING,
-			GPUStatus: DataTypes.STRING,
-			CpuStatus: DataTypes.STRING,
+			OshiStatus: DataTypes.JSON,
+			GPUStatus: DataTypes.JSON,
+			CpuStatus: DataTypes.JSON,
 		}, {
 			sequelize
 		})

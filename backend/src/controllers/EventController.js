@@ -1,23 +1,24 @@
 const EventHistory = require('../models/EventsHistory')
 const User = require('../models/Users')
 const moment = require('moment');
+const { raw } = require('body-parser');
 
 module.exports = {
     async getEvents(req, res){
-        const {UserId} = req.params;
+        try {
+            const {UserId} = req.params;
 
-        const user = await User.findByPk(UserId, {
+            const dataFound = await User.findByPk(UserId, {
             include: { association : 'histories'}
-        })
-        
-        const AllEventHistory = await EventHistory.findAll({
-            where:{
-                UserId: UserId
-            }
-        })
-        return res.json({user}
-            
-        )
+            }, {raw: true}).then((x) => {
+                console.log(x.get({ plain: true}))
+            })
+
+            return res.json({dataFound})
+
+        } catch (error) {
+            return res.json({error})
+        }
     },
     async cadastrarEvento(req, res){
         try {
