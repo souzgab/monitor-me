@@ -1,44 +1,102 @@
 const EventHistory = require('../models/EventsHistory')
 const User = require('../models/Users')
 const moment = require('moment');
-const { raw } = require('body-parser');
+const {
+    sequelize
+} = require('../models/EventsHistory');
 
 module.exports = {
-    async getEvents(req, res){
+    async getEvents(req, res) {
         try {
-            const {UserId} = req.params;
+            const {
+                UserId
+            } = req.params;
 
-            const dataFound = await User.findByPk(UserId, {
-            include: { association : 'histories'}
-            }, {raw: true}).then((x) => {
-                console.log(x.get({ plain: true}))
+            let histories = {},
+                hardware = [];
+            var obj = {};
+            var cpu = {};
+            await User.findByPk(UserId, {
+                include: {
+                    association: 'histories',
+                    order: ['createdAt', 'DESC']
+                }
+            }).then((resultado) => {
+                const x = resultado.get({
+                    plain: true
+                })
+
+                hardware = x['histories']
+
+                histories = hardware.map((registro) => {
+                    const obj = {
+                        id: registro.id,
+                        userId: registro.UserId,
+                        Oshi: registro.OshiStatus,
+                        Gpu: registro.GPUStatus,
+                        Cpu: registro.CpuStatus,
+                        ctD: registro.createdAt
+                    }
+                    return obj;
+                })
+
+                obj = histories.map((resul) => {
+                    const mpInfo = {
+                        CpuFinal: resul.Cpu,
+                        GpuFinal: resul.Gpu,
+                        OshiFinal: resul.Oshi
+                    }
+                    return mpInfo
+                })
+
+                cpu = obj.map((resul) => {
+                    const final = {
+                        cpuDados: JSON.parse(resul.CpuFinal),
+                        gpuDados: JSON.parse(resul.GpuFinal),
+                        oshiDados: JSON.parse(resul.OshiFinal),
+                    }
+                    return final;
+                });
+            })
+            return res.send({dadosHardware: cpu})
+        } catch (error) {
+            return res.send(error)
+        }
+    },
+    async cadastrarEvento(req, res) {
+        try {
+            const {
+                UserId
+            } = req.body;
+            const {
+                OshiStatus,
+                GPUStatus
+            } = req.body;
+            const x = await EventHistory.create({
+                UserId: UserId,
+                OshiStatus: OshiStatus,
+                GPUStatus: GPUStatus
             })
 
-            return res.json({dataFound})
+            return res.send({
+                x
+            })
 
         } catch (error) {
-            return res.json({error})
+            return res.send({
+                error
+            })
         }
     },
-    async cadastrarEvento(req, res){
-        try {
-            const {UserId} = req.body;
-            const {OshiStatus, GPUStatus} = req.body;
-            const x = await EventHistory.create({
-            UserId: UserId, OshiStatus: OshiStatus, GPUStatus: GPUStatus
-        })
+    async getAllUser(req, res) {
 
-        return res.send({x})
-
-        } catch (error) {
-            return res.send({error})
-        }
-    },
-    async getAllUser(req, res){
-        
         const x = await User.findAll();
         const y = await EventHistory.findAll();
 
-        res.status(200).send({message: "Done", pessoas: x, eventos: y});
+        res.status(200).send({
+            message: "Done",
+            pessoas: x,
+            eventos: y
+        });
     }
 }
