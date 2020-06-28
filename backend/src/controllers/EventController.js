@@ -19,7 +19,7 @@ module.exports = {
                     separate: true,
                     order: [['id', 'DESC']],
                     association: 'histories',
-                    limit: 5
+                    limit: 10
                 }, 
             }).then((resultado) => {
                 console.log(resultado)
