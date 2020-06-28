@@ -8,9 +8,7 @@ const {
 module.exports = {
     async getEvents(req, res) {
         try {
-            const {
-                UserId
-            } = req.params;
+            const {UserId} = req.params;
 
             let histories = {},
                 hardware = [];
@@ -19,8 +17,8 @@ module.exports = {
             await User.findByPk(UserId, {
                 include: {
                     association: 'histories',
-                    order: ['createdAt', 'DESC']
-                }
+                    order: [['id', 'DESC']]
+                } 
             }).then((resultado) => {
                 const x = resultado.get({
                     plain: true
@@ -44,7 +42,8 @@ module.exports = {
                     const mpInfo = {
                         CpuFinal: resul.Cpu,
                         GpuFinal: resul.Gpu,
-                        OshiFinal: resul.Oshi
+                        OshiFinal: resul.Oshi,
+                        ctD: resul.ctD
                     }
                     return mpInfo
                 })
@@ -54,7 +53,9 @@ module.exports = {
                         cpuDados: JSON.parse(resul.CpuFinal),
                         gpuDados: JSON.parse(resul.GpuFinal),
                         oshiDados: JSON.parse(resul.OshiFinal),
+                        ctDDados: moment(resul.ctD).locale('pt-br').format('LLLL')
                     }
+                    console.log(final)
                     return final;
                 });
             })
