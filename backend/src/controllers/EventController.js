@@ -16,10 +16,13 @@ module.exports = {
             var cpu = {};
             await User.findByPk(UserId, {
                 include: {
+                    separate: true,
+                    order: [['id', 'DESC']],
                     association: 'histories',
-                    order: [['id', 'DESC']]
-                } 
+                    limit: 5
+                }, 
             }).then((resultado) => {
+                console.log(resultado)
                 const x = resultado.get({
                     plain: true
                 })
@@ -55,7 +58,6 @@ module.exports = {
                         oshiDados: JSON.parse(resul.OshiFinal),
                         ctDDados: moment(resul.ctD).locale('pt-br').format('LLLL')
                     }
-                    console.log(final)
                     return final;
                 });
             })
